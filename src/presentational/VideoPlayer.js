@@ -22,6 +22,7 @@ export default class VideoPlayer extends Component {
                 this.setState({ videoLoading: true });
                 this.video.play().then(() => {
                     this.setState({ videoLoading: false });
+                    this.props.onVideoPlayingStart();
                 });
             }
         }

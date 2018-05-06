@@ -4,20 +4,43 @@ import 'webrtc-adapter';
 import Webcam from './container/Webcam';
 import VideoPlayer from './presentational/VideoPlayer';
 import styles from './App.module.css';
+import url from './assets/chruch-of-satan.gif';
 
 class App extends Component {
+  state = {
+    videoPlaying: false,
+  }
+
+  onVideoPlayingStart = () => {
+    this.setState({
+      videoPlaying: true
+    })
+  }
+
   render() {
     return (
-      <div className={styles.container}>
-        <Webcam>
-          {({ loading, error, stream }) =>
-            <VideoPlayer 
-              loading={loading}
-              error={error}
-              stream={stream}
-            />
-          }
-        </Webcam>
+      <div className={styles.container} style={
+        this.state.videoPlaying ? ({
+          backgroundColor: "#121212",
+          color: "#cd0507"
+        }) : ({})
+      }>
+        {this.state.videoPlaying ? (<div className={styles.heading}>
+          <img className={styles.headingIcon} src={url} />
+          <div className={styles.headingText}>You Devil</div>
+        </div>) : null}
+        <div>
+          <Webcam>
+            {({ loading, error, stream }) =>
+              <VideoPlayer 
+                loading={loading}
+                error={error}
+                stream={stream}
+                onVideoPlayingStart={this.onVideoPlayingStart}
+              />
+            }
+          </Webcam>
+        </div>
       </div>
     )
   }
