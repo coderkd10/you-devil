@@ -7,7 +7,9 @@
 .heading {
     text-align: center;
     height: 150px;
+    width: 100%;
     padding-top: 30px;
+    overflow: hidden;
 }
 
 .headingIcon {
@@ -21,5 +23,6 @@
     line-height: 150px;
     vertical-align: top;
     display: inline-block;
-    margin-left: 18px;
+    margin-left: 23px;
+    margin-right: 23px;
 }

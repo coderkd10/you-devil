@@ -26,8 +26,14 @@ class App extends Component {
         }) : ({})
       }>
         {this.state.videoPlaying ? (<div className={styles.heading}>
-          <img className={styles.headingIcon} src={url} />
-          <div className={styles.headingText}>You Devil</div>
+          <div style={{
+            display: "inline-block",
+            whiteSpace: "nowrap"
+          }}>
+            <img className={styles.headingIcon} src={url} />
+            <div className={styles.headingText}>You Devil</div>
+            <img className={styles.headingIcon} src={url} />
+          </div>
         </div>) : null}
         <div>
           <Webcam>
