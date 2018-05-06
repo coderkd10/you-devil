@@ -54,12 +54,20 @@ const makeSizeable = OrigIcon => {
             }
 
             return (
-                <div {...otherProps}>
+                <div
+                    {...otherProps} 
+                    style={{
+                        height: scaleX*origHeight,
+                        width: scaleY*origWidth,
+                        ...otherProps.style
+                    }}
+                >
                     <div style={{
                         width: 16,
                         height: 16,
                         position: 'relative',
-                        transform: `scaleX(${scaleX}) scaleY(${scaleY})`
+                        transform: `scaleX(${scaleX}) scaleY(${scaleY})`,
+                        transformOrigin: '0 0'
                     }}>
                         <OrigIcon 
                             style={{
@@ -68,7 +76,7 @@ const makeSizeable = OrigIcon => {
                                 left:0,
                             }}
                         />
-                    </div> 
+                    </div>
                 </div>
             );
         }
