@@ -1,11 +1,10 @@
+import 'webrtc-adapter';
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import 'webrtc-adapter';
 import Webcam from './container/Webcam';
 import VideoPlayer from './presentational/VideoPlayer';
-import styles from './App.module.css';
-import url from './assets/chruch-of-satan.gif';
 import Heading from './presentational/Heading';
+import styles from './App.module.css';
 
 class App extends Component {
   state = {
@@ -26,18 +25,7 @@ class App extends Component {
           color: "#cd0507"
         }) : ({})
       }>
-        {/* {this.state.videoPlaying ? (<div className={styles.heading}>
-          <div style={{
-            display: "inline-block",
-            whiteSpace: "nowrap"
-          }}>
-            <img className={styles.headingIcon} src={url} />
-            <div className={styles.headingText}>You Devil</div>
-            <img className={styles.headingIcon} src={url} />
-          </div>
-        </div>) : null} */}
         {this.state.videoPlaying ? <Heading /> : null}
-
         <div>
           <Webcam>
             {({ loading, error, stream }) =>

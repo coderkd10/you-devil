@@ -3,29 +3,3 @@
     width: 100vw;
     height: 100vh;
 }
-
-.heading {
-    text-align: center;
-    /* Don't use a fixed height container for heading */
-    /* Its height will be determined by what's inside the container */
-    /* for now keeping it as it is, will change this in the future */
-    height: 150px;
-    width: 100%;
-    padding-top: 30px;
-    overflow: hidden;
-}
-
-.headingIcon {
-    height: 150px;
-    display: inline-block;
-}
-
-.headingText {
-    font-family: 'Devonshire', cursive;
-    font-size: 75px;
-    line-height: 150px;
-    vertical-align: top;
-    display: inline-block;
-    margin-left: 23px;
-    margin-right: 23px;
-}

@@ -4,11 +4,11 @@ import HorizontalAutoScale from '../shared/HorizontalAutoScale';
 import url from '../assets/chruch-of-satan.gif';
 import styles from './Heading.module.css';
 
-const HeadingLogo = () => 
+const Logo = () => 
     <div className={styles.headingLogo}>
-        <img className={styles.logoIcon} src={url} />
+        <img alt='' className={styles.logoIcon} src={url} />
         <div className={styles.logoText}>You Devil</div>
-        <img className={styles.logoIcon} src={url} />
+        <img alt='' className={styles.logoIcon} src={url} />
     </div>
 
 const Heading = () =>
@@ -18,13 +18,11 @@ const Heading = () =>
             <HorizontalAutoScale 
                 containerWidth={width}
                 render={() => 
-                    <HeadingLogo />
+                    <Logo />
                 }
             />
         }
         </ContainerDimensions>
     </div>
 
-
 export default Heading;
-
