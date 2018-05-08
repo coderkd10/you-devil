@@ -52,25 +52,6 @@ const makeXScaled = OrigComponent => {
         }
     }
 
-    const getScalingFactor = (targetContainerWidth, elementWidth) => {
-        if (elementWidth === 0)
-            return 1;
-        const ratio = targetContainerWidth / elementWidth;
-        return ratio;
-    }
-    const getNewScale = (prevScale, scalingFactor) => {
-        const newScale = prevScale * scalingFactor;
-        return Math.min(newScale, 1);
-    }
-
-    // const pcr = (contentRect, state) => {
-    //     const bw = contentRect.bounds.width;
-    //     const ew = contentRect.entry.width;
-    //     const s = state.scale;
-    //     const cow = bw / s;
-    //     return { bw, ew, cow, s };
-    // }
-
     const getScale = (baseWidth, containerWidth) => {
         // computes what is the desired scale that we should use
         // so that element with baseWidth fits inside containerWidth
