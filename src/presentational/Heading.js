@@ -13,7 +13,7 @@ const HeadingLogo = () =>
 const ScaledLogo = makeXScaled(HeadingLogo);
 
 const Heading = () =>
-    <div className={styles.heading}>
+    <div className={styles.headingContainer}>
         <ScaledLogo />
     </div>
 
