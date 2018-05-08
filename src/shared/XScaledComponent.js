@@ -34,14 +34,14 @@ const makeXScaled = OrigComponent => {
         //     }
         // }
 
-        componentWillMount() {
-            console.log('--> willmount : T' + this.gt());
-        }
+        // componentWillMount() {
+        //     console.log('--> willmount : T' + this.gt());
+        // }
 
-        componentDidMount() {
-            // console.log('--> component mounted now. w = ', this.w);
-            console.log('--> didmount : T' + this.gt());
-        }
+        // componentDidMount() {
+        //     // console.log('--> component mounted now. w = ', this.w);
+        //     console.log('--> didmount : T' + this.gt());
+        // }
 
         // onResize = ({ bounds }) => {
 
@@ -105,6 +105,13 @@ const makeXScaled = OrigComponent => {
         return Math.min(newScale, 1);
     }
 
+    // const pcr = (contentRect, state) => {
+    //     const bw = contentRect.bounds.width;
+    //     const ew = contentRect.entry.width;
+    //     const s = state.scale;
+    //     const cow = bw / s;
+    //     return { bw, ew, cow, s };
+    // }
 
     class Inner extends Component {
         constructor(props) {
@@ -125,9 +132,14 @@ const makeXScaled = OrigComponent => {
                 slackScale: 1,                
                 slackContainerWidth: props.containerWidth,
             };
+
+            // const gcr = () => pcr(this.ccr, this.state);
+            // window.gcr = gcr;
         }
 
         onResize = (contentRect) => {
+            // console.log(pcr(contentRect, this.state));
+
             const curWidth = contentRect.bounds.width;
             // alternative way of getting the content width
             // const curWidth = contentRect.entry.width * this.state.scale;
@@ -137,6 +149,8 @@ const makeXScaled = OrigComponent => {
             // onResize will not get trigged when state gets updated with new scale
             // so we'll compute the new width and store it in the state
             const newWidth = curWidth * (newScale / this.state.scale);
+
+            // console.log("--> updated scale to - ", newScale);
 
             this.setState({
                 scale: newScale,
@@ -156,6 +170,21 @@ const makeXScaled = OrigComponent => {
             }
 
             const newContainerWidth = nextProps.containerWidth;
+            if (prevState.slackScale === 1) {
+                // at the time when container was of width slackContainerWidth
+                // our element was still smaller than the slackContainerWidth
+                // => we don't have to consider the slackContainerWidth anymore
+                // just try to fit the element with width elementWidth into the current container
+                const scalingFactor = getScalingFactor(newContainerWidth, prevState.elementWidth);
+                const newScale = getNewScale(1, scalingFactor);
+                return {
+                    ...prevState,
+                    scale: newScale,
+                    lastContainerWidth: newContainerWidth
+                };
+            }
+
+
             const scalingFactor = newContainerWidth / prevState.slackContainerWidth;
             const newScale = getNewScale(prevState.slackScale, scalingFactor);
 
@@ -180,8 +209,9 @@ const makeXScaled = OrigComponent => {
                     {({ measureRef, contentRect }) =>
             
                     {
-                        // console.log('-r w: ', contentRect.bounds.width);
-                    
+                        // this.ccr = contentRect;
+                        // console.log(`ccr - `, pcr(contentRect, this.state));
+                        
                     return <div ref={measureRef} style={{
                         display: 'inline-block',
                         ...(this.state.initialSizeFound || true ? {
