@@ -95,7 +95,6 @@ class HorizontalAutoScale extends Component {
     render() {
         return (
             <div style={{
-                width: this.props.containerWidth,
                 overflow: 'hidden',
                 whiteSpace: 'nowrap'
             }}>
