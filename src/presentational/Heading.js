@@ -4,10 +4,10 @@ import url from '../assets/chruch-of-satan.gif';
 import styles from './Heading.module.css';
 
 const HeadingLogo = () => 
-    <div>
-        <img className={styles.headingIcon} src={url} />
-        <div className={styles.headingText}>You Devil</div>
-        <img className={styles.headingIcon} src={url} />
+    <div className={styles.headingLogo}>
+        <img className={styles.logoIcon} src={url} />
+        <div className={styles.logoText}>You Devil</div>
+        <img className={styles.logoIcon} src={url} />
     </div>
 
 const ScaledLogo = makeXScaled(HeadingLogo);
