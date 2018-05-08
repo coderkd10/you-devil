@@ -1,5 +1,6 @@
 // Takes a input component and applies scaling transform on its
 // so that it can fit inside a *fixed width* parent component
+// TODO : Publish this as a standalone library in npm
 
 // TODO : refactor this and decouple it from Container Dimensions
 // This component should take a target container width as prop
@@ -70,123 +71,82 @@ const makeXScaled = OrigComponent => {
     //     return { bw, ew, cow, s };
     // }
 
-    class Inner extends Component {
-        constructor(props) {
-            super(props);
-            this.state = {
-                scale: 1,
-                elementWidth: null,
-                lastContainerWidth: props.containerWidth,
-                // slack scale & container width are used to when container width changes
-                // due to window resize, coz then element resize isn't trigger
-                // and we are stuck with old values
-                // So the invariant that we are working with is ->
-                // elementWidth does not always represent the width of the contained component
-                // But, it does represent the width of the component *when* container width
-                // was equal to slackContainerWidth (slackSlack represents the scale at that point)
-                // Now if the current container width is equal to the slack container width
-                // the element does indeed represent the correct inner width
-                slackScale: 1,                
-                slackContainerWidth: props.containerWidth,
-            };
-
-            // const gcr = () => pcr(this.ccr, this.state);
-            // window.gcr = gcr;
+    const getScale = (baseWidth, containerWidth) => {
+        // computes what is the desired scale that we should use
+        // so that element with baseWidth fits inside containerWidth
+        if (containerWidth >= baseWidth) {
+            return 1;
         }
+        return containerWidth / baseWidth;
+    }
 
-        onResize = (contentRect) => {
-            // console.log(pcr(contentRect, this.state));
+    class Inner extends Component {
+        state = {
+            // unscaled width of the input component
+            baseWidth: null,
+            // current scale factor used in scaling transform
+            scale: 1,
+            // used to track change in container dimensions
+            lastContainerWidth: null
+        };
 
-            const curWidth = contentRect.bounds.width;
-            // alternative way of getting the content width
-            // const curWidth = contentRect.entry.width * this.state.scale;
-            const containerWidth = this.props.containerWidth;
-            const scalingFactor = getScalingFactor(containerWidth, curWidth);
-            const newScale = getNewScale(this.state.scale, scalingFactor);
-            // onResize will not get trigged when state gets updated with new scale
-            // so we'll compute the new width and store it in the state
-            const newWidth = curWidth * (newScale / this.state.scale);
-
-            // console.log("--> updated scale to - ", newScale);
-
-            this.setState({
-                scale: newScale,
-                slackScale: newScale,
-                elementWidth: newWidth,
-                lastContainerWidth: this.props.containerWidth,
-                slackContainerWidth: this.props.containerWidth,
-            });            
+        onResize = ({ bounds }) => {
+            // This is fired only basewidth changes
+            // but we've written in a way that if this behavior changes
+            // in the future we'll be unaffected.
+            
+            // Basically the job of this method is only the update the base
+            // width (along with new scale) whenever it changes and 
+            // ignore everything else
+            const { width } = bounds;
+            const newBaseWidth = width / this.state.scale;
+            if (newBaseWidth !== this.state.baseWidth) {
+                // base width has updated need to update it along with scale
+                this.setState({
+                    baseWidth: newBaseWidth,
+                    scale: getScale(newBaseWidth, this.props.containerWidth)
+                })
+            }
         }
 
         static getDerivedStateFromProps(nextProps, prevState) {
-            if ((nextProps.containerWidth === prevState.lastContainerWidth) ||
-                (!prevState.elementWidth)) {
-                // either we don't have any change in container width
-                // or we haven't computed the initialsize yet
+            if ((nextProps.containerWidth === prevState.lastContainerWidth) || 
+                (!prevState.baseWidth)) {
+                // either containerWidth did not update
+                // or we don't know baseWidth yet. 
+                // no point in updating the state here
                 return null;
             }
-
+            
             const newContainerWidth = nextProps.containerWidth;
-            if (prevState.slackScale === 1) {
-                // at the time when container was of width slackContainerWidth
-                // our element was still smaller than the slackContainerWidth
-                // => we don't have to consider the slackContainerWidth anymore
-                // just try to fit the element with width elementWidth into the current container
-                const scalingFactor = getScalingFactor(newContainerWidth, prevState.elementWidth);
-                const newScale = getNewScale(1, scalingFactor);
-                return {
-                    ...prevState,
-                    scale: newScale,
-                    lastContainerWidth: newContainerWidth
-                };
-            }
-
-
-            const scalingFactor = newContainerWidth / prevState.slackContainerWidth;
-            const newScale = getNewScale(prevState.slackScale, scalingFactor);
-
             return {
-                scale: newScale,
-                slackScale: prevState.slackScale,
-
-                elementWidth: prevState.elementWidth,
+                ...prevState,
+                scale: getScale(prevState.baseWidth, newContainerWidth),
                 lastContainerWidth: newContainerWidth,
-                slackContainerWidth: prevState.slackContainerWidth
             };
         }
 
         render() {
             return (
-            <div style={{
-                width: this.props.containerWidth,
-                overflowX: 'hidden',
-                whiteSpace: 'nowrap'
-            }}>
-                <Measure bounds onResize={this.onResize}>
-                    {({ measureRef, contentRect }) =>
-            
-                    {
-                        // this.ccr = contentRect;
-                        // console.log(`ccr - `, pcr(contentRect, this.state));
-                        
-                    return <div ref={measureRef} style={{
-                        display: 'inline-block',
-                        ...(this.state.initialSizeFound || true ? {
-                            transform: `scale(${this.state.scale})`,
-                            // transform: `scaleX(${this.getScale()})`,
-                            transformOrigin: '0 0'
-                        } : {
-                            // visibility: 'hidden'
-                        })
-                    }}>
-                        <OrigComponent />
-                    </div>}
-                }
-                </Measure>
-            </div>);
+                <div style={{
+                    width: this.props.containerWidth,
+                    overflow: 'hidden',
+                    whiteSpace: 'nowrap'
+                }}>
+                    <Measure bounds onResize={this.onResize}>
+                        {({ measureRef }) =>
+                            <div ref={measureRef} style={{
+                                display: 'inline-block',
+                                transform: `scale(${this.state.scale})`,
+                                transformOrigin: '0 0'
+                            }}>
+                                <OrigComponent />
+                            </div>
+                        }
+                    </Measure>
+                </div>);
         }
     }
-
 
     return XScaledComponent;
 }
