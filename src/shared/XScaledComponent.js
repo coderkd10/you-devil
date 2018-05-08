@@ -39,78 +39,10 @@ import Measure from 'react-measure';
 
 const makeXScaled = OrigComponent => {
     class XScaledComponent extends Component {
-        state = {
-            scale: 1,
-            isScaleFound: false,
-        }
-
-        constructor(props) {
-            super(props);
-            const t0 = performance.now();
-            this.gt = () => performance.now() - t0;
-        }
-
-        // onGetWidth = (containerWidth, componentWidth) => {
-        //     if (componentWidth <= containerWidth) {
-        //         this.setState({ isScaleFound: true, scale: 1 });
-        //     } else {
-        //         const scale = containerWidth / componentWidth;
-        //         this.setState({ isScaleFound: true, scale });
-        //     }
-        // }
-
-        // componentWillMount() {
-        //     console.log('--> willmount : T' + this.gt());
-        // }
-
-        // componentDidMount() {
-        //     // console.log('--> component mounted now. w = ', this.w);
-        //     console.log('--> didmount : T' + this.gt());
-        // }
-
-        // onResize = ({ bounds }) => {
-
-        // }
-
         render() {
             return <ContainerDimensions>
             {
                 ({ width }) => (
-                    // <div style={{
-                    //     width,
-                    //     overflowX: 'hidden',
-                    //     whiteSpace: 'nowrap'
-                    // }}>
-                    //     <div style={{
-                    //         display: 'inline-block',
-                    //         ...(this.state.isScaleFound ? {
-                    //             transform: `scaleX(${this.state.scale})`,
-                    //             transformOrigin: '0 0'
-                    //         } : {
-                    //             // visibility: 'hidden'
-                    //         })
-                    //     }}>
-                    //         {/* <SizeMeComponent 
-                    //             onGetWidth={compWidth => this.onGetWidth(width, compWidth)}
-                    //         /> */}
-                    //         {/* <OrigComponent /> */}
-                    //         {/* <SizeMeComponent onGetWidth={w => {
-                    //             console.log(`--> T${this.gt()} `, w);
-                    //         }} /> */}
-
-                    //         <Measure bounds
-                    //             onResize={this.onResize}
-                    //         >
-                    //         {
-                    //             ({ measureRef, contentRect }) =>
-                    //                 <div ref={measureRef}>
-                    //                     {/* // { console.log(`--> T${this.gt()} `, contentRect) } */}
-                    //                     <OrigComponent />
-                    //                 </div>
-                    //         }
-                    //         </Measure>
-                    //     </div>
-                    // </div>
                     <Inner containerWidth={width} />
 
                 )
