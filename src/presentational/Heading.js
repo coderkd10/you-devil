@@ -1,6 +1,6 @@
 import React from 'react';
 import ContainerDimensions from 'react-container-dimensions';
-import HorizontalAutoScale from '../shared/XScaledComponent';
+import HorizontalAutoScale from '../shared/HorizontalAutoScale';
 import url from '../assets/chruch-of-satan.gif';
 import styles from './Heading.module.css';
 
