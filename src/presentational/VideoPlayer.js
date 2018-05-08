@@ -48,14 +48,17 @@ export default class VideoPlayer extends Component {
                 </div>) : null
             }
             {(!error && !loading) ?
-                (<video 
-                    className={classNames(styles.video, styles.center)}
-                    muted
-                    ref={ref => this.video = ref}
-                    style={{
-                        visibility: this.state.videoLoading ? 'hidden' : 'visible'
-                    }}
-                />) : null
+                (<div className={styles.center}>
+                    <video 
+                        className={classNames(styles.video)}
+                        muted
+                        ref={ref => this.video = ref}
+                        style={{
+                            visibility: this.state.videoLoading ? 'hidden' : 'visible'
+                        }}
+                    />
+                    <button>Take Screenshot</button>
+                </div>) : null
             }
         </div>
     }
