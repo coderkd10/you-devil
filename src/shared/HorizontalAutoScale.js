@@ -96,7 +96,8 @@ class HorizontalAutoScale extends Component {
         return (
             <div style={{
                 overflow: 'hidden',
-                whiteSpace: 'nowrap'
+                whiteSpace: 'nowrap',
+                maxWidth: this.props.containerWidth,
             }}>
                 <Measure bounds onResize={this.onResize}>
                     {({ measureRef }) =>
