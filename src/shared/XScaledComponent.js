@@ -1,18 +1,43 @@
-// Scale a component so that it fits inside a fixed width container
+// Takes a input component and applies scaling transform on its
+// so that it can fit inside a *fixed width* parent component
+
+// TODO : refactor this and decouple it from Container Dimensions
+// This component should take a target container width as prop
+// and a render prop, and appropriately scale the render prop
+// component so that it fits with the input container width, i.e,
+// rendered component's width <= container width
+
 import React, { Component } from 'react';
 import ContainerDimensions from 'react-container-dimensions';
-import sizeMe from 'react-sizeme';
 import Measure from 'react-measure';
 
+// Important point to note about what react-measure does :
+// Terminology -> We have a base component, and then apply some
+// scaling transform on it. Now we are concerned with two kinds
+// of sizes of the element ->
+
+// 1. Base / Unscaled size: this is the size when no scaling
+// (i.e scale = 1) is applied to the element.
+// 2. Actual / Scaled size: Actual size of the element after scaling has
+// been applied. i.e scale size = base size * scale applied
+
+// We might think that react-measure would give the actual / scale size (type 2),
+// (because it is what we'll get if we take the actual dom node, and use `getClientBooundRect`
+// on it that dimension is what we'll get).
+// And indeed this is what react-measure will give us in its `onResize` method (contentRect.bounds) 
+// (the value passed as a render prop to the child is a mirror of this value, and its also updates only 
+// when onResize gets trigged, and they are guranteed to be in sync).
+
+// So logically we'll think that whenever actual size updates onResize will get called. But
+// this is where we get it wrong, and react-measure somehow triggers only when the base size (type 1)
+// is updated. Maybe this has something to do without react-measure implements its resize listening
+// logic. TODO: Look at the react-measure's source and figure out what exactly causes this behaviour,
+// and think about if we can do something so that react-measure can also track changes caused by
+// scale changing.
+// (But in this case its not tracking the changes caused by scaling changing has made the problem somewhat
+// simpler for us).
 
 const makeXScaled = OrigComponent => {
-    const SizeMeWrapper = ({ size, onGetWidth }) => {
-        onGetWidth(size.width);
-        return <OrigComponent />;
-    }
-    const SizeMeComponent = sizeMe()(SizeMeWrapper);
-
-
     class XScaledComponent extends Component {
         state = {
             scale: 1,
