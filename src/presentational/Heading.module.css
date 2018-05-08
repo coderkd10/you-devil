@@ -1,9 +1,7 @@
-/* this is the fixed with heading container */
 .headingContainer {
+    /* this is the fixed width heading container */
+    /* inside which the actual (scaled) logo is rendered */
     text-align: center;
-    /* Not using a fixed height container for heading */
-    /* Its height will be determined by what's inside the container */
-    /* height: 150px; */
     width: 100%;
 }
 

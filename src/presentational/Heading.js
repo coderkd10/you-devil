@@ -1,5 +1,6 @@
 import React from 'react';
-import makeXScaled from '../shared/XScaledComponent';
+import ContainerDimensions from 'react-container-dimensions';
+import HorizontalAutoScale from '../shared/XScaledComponent';
 import url from '../assets/chruch-of-satan.gif';
 import styles from './Heading.module.css';
 
@@ -10,11 +11,18 @@ const HeadingLogo = () =>
         <img className={styles.logoIcon} src={url} />
     </div>
 
-const ScaledLogo = makeXScaled(HeadingLogo);
-
 const Heading = () =>
     <div className={styles.headingContainer}>
-        <ScaledLogo />
+        <ContainerDimensions>
+        {({ width }) =>
+            <HorizontalAutoScale 
+                containerWidth={width}
+                render={() => 
+                    <HeadingLogo />
+                }
+            />
+        }
+        </ContainerDimensions>
     </div>
 
 
