@@ -1,25 +1,16 @@
-.center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-}
-
 .container {
-    position: absolute;
-    /* min-width: 800px; */
-    /* min-height: 600px;    */
-}
-
-.errorText {
-    text-align: center;
-    font-size: 16px;
+    margin: 0 10px;
 }
 
 .video {
-    max-width: 100%;
-    max-height: 100%;
+    /* actual border color is white since we use invert */
+    border: 1px solid black;
     border-radius: 9px;
     background-color: #949494;
     filter: invert(1);
+}
+
+.button {
+    display: block;
+    margin: 10px auto 2px;
 }
