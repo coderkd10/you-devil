@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './VideoPlayer.module.css';
 
-const VideoPlayer = ({ videoRef, style, videoMaxWidth, videoMaxHeight }) => (
+const VideoPlayer = ({ videoRef, style, videoMaxWidth, videoMaxHeight, onDownloadClick }) => (
     <div className={styles.container} style={style}>
         <video 
             className={styles.video}
@@ -13,7 +13,7 @@ const VideoPlayer = ({ videoRef, style, videoMaxWidth, videoMaxHeight }) => (
                 maxHeight: videoMaxHeight,
             }}
         />
-        <button className={styles.button}>Take Screenshot</button>
+        <button className={styles.button} onClick={onDownloadClick}>Take Screenshot</button>
     </div>);
 
 VideoPlayer.propTypes = {
@@ -21,6 +21,7 @@ VideoPlayer.propTypes = {
     videoMaxWidth: PropTypes.number,
     videoMaxHeight: PropTypes.number,
     videoRef: PropTypes.func,
+    onDownloadClick: PropTypes.func,
 };
 
 VideoPlayer.defaultProps = {
@@ -28,6 +29,7 @@ VideoPlayer.defaultProps = {
     videoMaxWidth: null,
     videoMaxHeight: null,
     videoRef: null,
+    onDownloadClick: () => {},
 };
 
 export default VideoPlayer;

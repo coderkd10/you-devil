@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import downloadjs from 'downloadjs';
 import ScaleLoader from 'react-spinners/dist/spinners/ScaleLoader';
 import OrigErrorIcon from 'react-icons/lib/md/error';
 import VideoPlayer from '../presentational/VideoPlayer';
 import makeSizable from '../shared/SizedIcon';
 import AutoScale from '../shared/AutoScale';
+import videoToImg from '../utils/video-to-img';
 import styles from './VideoContainer.module.css';
 
 const ErrorIcon = makeSizable(OrigErrorIcon);
@@ -14,6 +16,14 @@ class VideoContainer extends Component {
         videoLoading: true,
         videoHeight: null,
     };
+
+    downloadImage = () => {
+        const img = videoToImg(this.video, {
+            filter: 'invert(1)', 
+            mimeType: 'imaage/png'
+        });
+        downloadjs(img, 'you-devil.png', 'image/png');
+    }
 
     componentDidUpdate(prevProps, prevState) {        
         // check if stream has updated
@@ -89,6 +99,7 @@ class VideoContainer extends Component {
                             videoRef={ref => this.video = ref}
                             videoMaxWidth={width}
                             videoMaxHeight={height}
+                            onDownloadClick={this.downloadImage}
                         />
                     }
                     onResize={this.onVideoResize}
