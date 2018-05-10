@@ -50,6 +50,7 @@ class HorizontalAutoScale extends Component {
     state = {
         // unscaled width of the input component
         baseWidth: null,
+        baseHeight: null,
         // current scale factor used in scaling transform
         scale: 1,
         // used to track change in container dimensions
@@ -64,14 +65,15 @@ class HorizontalAutoScale extends Component {
         // Basically the job of this method is only the update the base
         // width (along with new scale) whenever it changes and 
         // ignore everything else
-        const { width } = bounds;
+        const { width, height } = bounds;
         const newBaseWidth = width / this.state.scale;
         if (newBaseWidth !== this.state.baseWidth) {
             // base width has updated need to update it along with scale
             this.setState({
                 baseWidth: newBaseWidth,
+                baseHeight: height / this.state.scale,
                 scale: getScale(newBaseWidth, this.props.containerWidth)
-            })
+            });
         }
     }
 
@@ -90,6 +92,21 @@ class HorizontalAutoScale extends Component {
             scale: getScale(prevState.baseWidth, newContainerWidth),
             lastContainerWidth: newContainerWidth,
         };
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if ((this.state.baseWidth !== prevState.baseWidth) || 
+            (this.state.baseHeight !== prevState.baseHeight) ||
+            (this.state.scale !== prevState.scale)) {
+            // compute actual width of the component
+            const width = this.state.baseWidth * this.state.scale;
+            const height = this.state.baseHeight * this.state.scale;
+            this.props.onResize({
+                width,
+                height,
+                scale: this.state.scale
+            });
+        }
     }
 
     render() {
@@ -117,6 +134,11 @@ class HorizontalAutoScale extends Component {
 HorizontalAutoScale.propTypes = {
     containerWidth: PropTypes.number.isRequired,
     render: PropTypes.func.isRequired,
+    onResize: PropTypes.func, // this callback gets called whenever inner's size gets updated
+};
+
+HorizontalAutoScale.defaultProps = {
+    onResize: console.log
 };
 
 export default HorizontalAutoScale;
