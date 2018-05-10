@@ -1,6 +1,6 @@
 import React from 'react';
-import ContainerDimensions from 'react-container-dimensions';
-import HorizontalAutoScale from '../shared/HorizontalAutoScale';
+import PropTypes from 'prop-types';
+import AutoScale from '../shared/AutoScale';
 import url from '../assets/chruch-of-satan.gif';
 import styles from './Heading.module.css';
 
@@ -11,18 +11,26 @@ const Logo = () =>
         <img alt='' className={styles.logoIcon} src={url} />
     </div>
 
-const Heading = () =>
-    <div className={styles.headingContainer}>
-        <ContainerDimensions>
-        {({ width }) =>
-            <HorizontalAutoScale 
-                containerWidth={width}
-                render={() => 
-                    <Logo />
-                }
-            />
-        }
-        </ContainerDimensions>
+const Heading = ({ containerWidth, style, onResize }) =>
+    <div className={styles.headingContainer} style={style}>
+        <AutoScale 
+            containerWidth={containerWidth}
+            render={() => 
+                <Logo />
+            }
+            onResize={onResize}
+        />
     </div>
+
+Heading.propTypes = {
+    containerWidth: PropTypes.number.isRequired,
+    style: PropTypes.object,
+    onResize: PropTypes.func,
+};
+
+Heading.defaultProps = {
+    style: {},
+    onResize: () => {},
+};
 
 export default Heading;
