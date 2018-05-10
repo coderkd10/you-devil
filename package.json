@@ -1,7 +1,8 @@
 {
-  "name": "devil-video",
+  "name": "you-devil",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://coderkd10.github.io/you-devil",
   "dependencies": {
     "classnames": "^2.2.5",
     "downloadjs": "^1.4.7",
