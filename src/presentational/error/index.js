@@ -1,6 +1,6 @@
 import React from 'react';
 import PermissionErrorDialog from './PermissionError';
-import GenericErrorDialog from './PermissionError';
+import GenericErrorDialog from './GenericError';
 
 const ErrorDialog = ({
     open,
