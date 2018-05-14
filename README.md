@@ -23,3 +23,4 @@ Some short term todos -
 - Handle case of no `getUserMedia`.
 - Layout is broken on phone.
 - Add error boundary.
+- Turns out you can also apply multiple filters together. `hue-rotate` filter also looks great; and hue rotation of 90 / 180 deg along with inversion seemed to be look better. Experiment with those (and other filters) and add a better looking default to the site. Also add advanced setting button which reveals some slider / control dials where you can futher tweek those settings to your liking. It should perist across sessions (use localstorage) and also add button to reset default. Option to export the settings to a json file and ability to load settings from a file will also be awesome.
